@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="Main">欢迎
+    <div id="input"></div>
+    功能测试中....</div>
+
+    <script>
+let num = window.location.search.slice(1);
+let arr = decodeURI(num)
+document.querySelector("#input").innerHTML = arr
+    </script>
+
+</body>
+</html>

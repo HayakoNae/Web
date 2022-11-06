@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>login</title>
+	<link rel="stylesheet" type="text/css" href="../Json/css/style.css"/>
+</head>
+<body>
+	<div class="control">
+		<div class="item">
+			<div class="active">SignIn</div>
+			<div>SignUp</div>
+		</div>
+		<div class="content">
+			<div style="display: block;">
+				<p>ID</p>
+				<input id="LogInID" type="text" placeholder="Enter your ID ..." />
+				<p>PWD</p>
+				<input id="LogInPWD" type="password" placeholder="Enter your Password ..." />
+				<br/>
+				<button id = "LogIn" type="submit">Ready</button>
+			</div>
+			<div>
+				<p>Name</p>
+				<input id="LogUpName" type="text" placeholder="Show me your name ..." />
+				<p>ID</p>
+				<input id = "LogUpID" type="password" placeholder="Decide your ID ..." />
+				<p>PWD</p>
+				<input id="LogUpPWD" type="text" placeholder="Just.Don't.Foget." />
+				<br/>
+				<button id = "LogUp"  type="submit" value="" >Ready</button>
+			</div>
+		</div>
+	</div>
+
+<script>
+	
+	window.onload = function()
+{
+    let item = document.getElementsByClassName("item");
+    let it = item[0].getElementsByTagName("div");
+
+    let content = document.getElementsByClassName("content");
+    let con = content[0].getElementsByTagName("div");
+
+    for(let i = 0;i<it.length;i++)
+    {
+        it[i].onclick = function()
+        {
+            for(let j=0;j<it.length;j++)
+            {
+                it[j].className = '';
+                con[j].style.display = "none";
+            }
+            this.className = "active";
+            it[i].index = i;
+            con[i].style.display = "block";
+        }
+    }
+}
+
+//
+let BTN = document.querySelector("#LogIn")
+BTN.addEventListener('click' , LogIn)
+
+function LogIn()
+{
+	let ID = document.querySelector("#LogInID").value
+	let PWD = document.querySelector("#LogInPWD").value
+	checkLogIn(ID,PWD)
+}
+
+function checkLogIn(id,pwd)
+{
+	const myHeaders = new Headers()
+	myHeaders.append("Content-Type", "application/json")
+	let requestOptions = 
+	{ // 里面不能有body
+ 		method: "GET",  
+  		headers: myHeaders,
+  		redirect: "follow",
+	}
+	fetch(`https://db-api.amarea.cn/users/${id}`, requestOptions)
+	.then(response => response.json())
+	.then(data => 
+	{
+  	if (data.id === id) 
+	{   
+		if (data.password == pwd)
+		{
+			alert("登陆成功，即将跳转！")
+			window.setTimeout(function(){
+				window.location="Main.html?" + data.name
+			},2000)
+		}
+		else
+		{
+			alert("密码错误，请重新输入密码！")
+			document.querySelector("#LogInPWD").value = ""
+		}
+  	} 
+	else 
+	{
+  		alert("用户名不存在,请注册！")
+		window.location="index.html"
+  	}
+ })
+.catch(err => console.log(err))
+}
+
+//
+let BTN2 = document.querySelector("#LogUp")
+BTN2.addEventListener('click' , regist)
+
+function regist(){
+	let NAME = document.querySelector("#LogUpName").value
+	let ID = document.querySelector("#LogUpID").value
+	let PWD = document.querySelector("#LogUpPWD").value
+	checkRegist(NAME,ID,PWD)
+}
+
+function checkRegist(name,id,password)
+{
+	const myHeaders = new Headers()
+	myHeaders.append("Content-Type", "application/json")
+	let requestOptions = 
+	{ 
+ 		method: "GET",  
+  		headers: myHeaders,
+  		redirect: "follow",
+	}
+	fetch(`https://db-api.amarea.cn/users`, requestOptions)
+	.then(response => response.json())
+	.then(data => 
+	{
+		flag = 1
+		for(let i=0, l = data.length;i < l ; i++)
+		{
+			if(data[i].id == id)
+			{
+				alert("ID重复，注册失败！")
+				document.querySelector("#LogUpID").value = ""
+				flag = 0
+				break
+			}
+		}
+		if(flag == 1)
+		{
+			readyRegist(name,id,password)
+		}
+ })
+.catch(err => console.log(err))
+}
+
+function readyRegist(name,id,password)
+{
+	const myHeaders = new Headers()
+myHeaders.append("Content-Type", "application/json")
+let requestOptions = {
+  method: "POST",
+  headers: myHeaders,
+  redirect: "follow",
+}
+requestOptions.body = JSON.stringify({id: id,password: password,name: name
+});
+fetch(`https://db-api.amarea.cn/users`, requestOptions)
+.then(response => response.json())
+.then(data => 
+{
+	alert("注册成功，请登录使用！")
+	window.location="index.html"
+})
+.catch(err => console.log(err)) 
+}
+
+	</script>
+</body>
+</html>
