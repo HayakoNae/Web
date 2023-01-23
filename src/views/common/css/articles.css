@@ -1,0 +1,139 @@
+.col-xs-12{
+  position: fixed;
+  display: flex;
+  top: 10%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; 
+}
+
+.formbox{
+	width: 1200px;
+}
+.sertchForm {
+	float: left;	
+}
+.col-xs-3 input{
+	float: left;
+	width: 500px;
+}
+
+.col-xs-3 span{
+	margin-left: 760px;
+}
+.col-xs-3 span a{
+	background-color: hotpink;
+}
+
+.col-xs-3 span a:hover{
+	background-color: pink;
+}
+
+/* .ii{
+	width: 200px;
+	height: 35px;
+} */
+.sertchInput{
+	
+}
+.sertch{
+	height: 35px;
+	line-height: 35px;
+}
+.sertch a{
+	margin-left: 400px;
+	background-color: hotpink;
+}
+
+.sertch a:hover{
+	background-color: pink;
+}
+.pagination li a{
+	background-color: hotpink;
+}
+.pagination li a:hover{
+	background-color: pink;
+}
+/* .pagination li a:visited{
+	background-color: pink;
+} */
+.formbox{
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+/* 消息提示框————————————————————————————————————————————> */
+.showMessage {
+	padding: 10px 20px;
+	border-radius: 5px;
+	position: fixed;
+	top: 2%;
+	left: 50%;
+	color: #ffffff;
+	z-index: 999;
+	transform: translate(-50%, 0);
+}
+
+.showMessageSuccess {
+	/*    background-color: #f0f9eb;
+    border: 1px solid #E1F3D8; */
+	color: #67c23a;
+}
+
+.showMessageError {
+	/*    background-color: #fef0f0;
+    border: 1px solid #fde2e2; */
+	color: #F76C6C;
+}
+
+/* 消息提示框————————————————————————————————————————————> */
+
+/** * 动态编辑框————————————————————————————————————————————> */
+.wrap-dialog {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				font-size: 16px;
+				text-align: center;
+				background-color: rgba(0, 0, 0, .4);
+				z-index: 999;
+			}
+		
+			.dialog {
+				position: relative;
+				margin: 4% auto;
+				width: 900px;
+				background-color: pink;
+			}
+		
+			.dialog .dialog-header {
+				height: 45px;
+				padding: 10px;
+				background-color: lightskyblue;
+			}
+		
+			.dialog .dialog-body {
+				height: 450px;
+				padding: 20px;
+			}
+		
+			.dialog .dialog-footer {
+				padding: 8px;
+				background-color: whitesmoke;
+			}
+		
+			.btn {
+				width: 100px;
+				padding: 2px;
+			}
+		
+			.hide {
+				display: none;
+			}
+		
+			.ml50 {
+				margin-left: 50px;
+			}
+/** * 动态编辑框————————————————————————————————————————————> */

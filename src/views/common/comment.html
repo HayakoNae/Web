@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<!-- <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"> -->
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>评论楼中楼功能</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+			<script src="https://cdn.jsdelivr.net/npm/vue@2.6/dist/vue.min.js"></script>
+			<link rel="stylesheet" href="css/personalinfo.css"/>
+</head>
+<style type="text/css">
+	::-webkit-scrollbar {
+		width: 6px;
+		height: 7px;
+		position: absolute;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background-color: rgba(255, 255, 255, .1);
+	}
+
+	::-webkit-scrollbar-track {
+		background-color: transparent
+	}
+</style>
+<body>
+<div class="wrap-dialog hide">
+			<div class="dialog">
+				<div class="dialog-header">
+					<span class="dialog-title">请登录</span>
+				</div>
+				<div class="dialog-body">
+					<span class="dialog-message">你确认发送消息？</span>
+				</div>
+				<div class="dialog-footer">
+					<input type="button" class="btn ml50" id="cancel" value="取消" />
+					<!-- <input type="button" class="btn" id="confirm" value="确认" /> -->
+				</div>
+			</div>
+		</div>
+	<div id="waypoint" class="m-margin- animated fadeIn">
+		<div class="ui container m-opacity box-shadow-max">
+			
+			<div class="ui bottom attached segment">
+				
+				<!--评论区域列表-->
+				<div id="comment-container" class="ui teal segment">
+					<div th:fragment="commentList" style="overflow-y: auto;height: 400px;">
+						<div style="font-size: 26px;margin-top: 3px;color: red;"><input id="submit" type="checkbox" onclick="OncheckBox(this)" style="width: 20px;height: 20px;"/>❤</div>
+						<div id="abc" class="ui threaded comments" style="max-width: 100%;">
+							<h3 class="ui dividing header">评论</h3>
+							
+							
+			
+	
+
+          </div>
+        </div>
+      </div>
+      <div id="comment-form" class="ui form">
+        <input type="hidden" name="parentComment.id" value="0">
+        <div class="field">
+          <textarea id="textareaContent" name="content" placeholder="请输入评论信息..." style="height: 20px;"></textarea>
+        </div>
+        <div class="fields">
+          <div class="field m-mobile-wide m-margin-bottom-small">
+            <div class="ui left icon input">
+              <i class="user icon"></i>
+              <input type="text" name="nickname" placeholder="姓名" th:value="${session.user}!=null ? ${session.user.nickname}">
+            </div>
+          </div>
+          <div class="field m-mobile-wide m-margin-bottom-small">
+            <div class="ui left icon input">
+              <i class="mail icon"></i>
+              <input type="text" name="email" placeholder="邮箱" th:value="${session.user}!=null ? ${session.user.email}">
+            </div>
+          </div>
+          <div class="field  m-margin-bottom-small m-mobile-wide">
+            <button id="commentpost-btn" type="button" class="ui teal button m-mobile-wide"><i class="edit icon"></i>发布</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<!-- <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script> -->
+			
+<script >
+    //评论表单验证
+    $('.ui.form').form({
+        fields: {
+            title: {
+                identifier: 'content',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入评论内容'
+                }
+                ]
+            },
+            content: {
+                identifier: 'nickname',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入你的大名'
+                }]
+            },
+            type: {
+                identifier: 'email',
+                rules: [{
+                    type: 'email',
+                    prompt: '请填写正确的邮箱地址'
+                }]
+            }
+        }
+    });
+
+
+    $(function () {
+        init();
+    });
+
+
+	function OncheckBox(e){
+		// var submit = document.getElementById("submit");
+		if(e.checked == true){
+			if(window.localStorage['token'] ==null || window.localStorage['article_id'] ==''){
+				dialogBox("请输入用户名密码");
+			}
+			
+			$.ajax({
+			
+			
+				type: "POST", //请求方式
+				data: {
+					
+					  "token": window.localStorage['token'],
+					  "type": "POST",
+					  "sid": window.localStorage['article_id']
+				},
+				url: " https://blog-server-api.amarea.cn/post/submitLike", //请求地址
+				success: function(data) {
+					console.log("data:", data)
+					
+				}
+			
+			});
+		}else{
+			$.ajax({
+			
+			
+				type: "POST", //请求方式
+				data: {
+					
+					  
+					    "token": window.localStorage['token'],
+					    "type": "POST",
+					    "sid": window.localStorage['article_id']
+				},
+				url: " https://blog-server-api.amarea.cn/post/cancelLike", //请求地址
+				success: function(data) {
+					console.log("data:", data.data.posts)
+					
+				}
+			
+			});
+		}
+	}
+
+	function init(){
+		$.ajax({
+		
+		
+			type: "GET", //请求方式
+			data:{
+				pid:window.localStorage['article_id'],
+			},
+			url: " https://blog-server-api.amarea.cn/post/getComment", //请求地址
+			success: function(data) {
+				console.log("comment",data);
+		
+				vewData=data.data.comments;
+				
+				var abc = document.getElementById("abc");
+				abc.innerHTML='<h3 class="ui dividing header">评论</h3>';
+				for (let i = 0; i < vewData.length; i++) {
+					// console.log("vewData[i]",vewData[i])
+					
+					
+					var commentDiv=document.createElement("div");
+					commentDiv.className="comment";
+					abc.appendChild(commentDiv);
+					
+					
+					var avatar = document.createElement("a");
+					avatar.className="avatar";
+					commentDiv.appendChild(avatar);
+					
+					
+					var img= document.createElement("img");
+					img.src=vewData[i].user.avatar;
+					avatar.appendChild(img);
+					
+					var content= document.createElement("div");
+					content.className="content";
+					commentDiv.appendChild(content);
+					
+					var author = document.createElement("a");
+					author.className="author";
+					content.appendChild(author);
+					
+					var firstComment = document.createElement("span");
+					firstComment.id="firstComment";
+					firstComment.innerHTML=vewData[i].user.nickname;
+					author.appendChild(firstComment);
+					
+					var metadata = document.createElement("div");
+					metadata.className="metadata";
+					content.appendChild(metadata);
+					
+					var date = document.createElement("span");
+					date.className="date";
+					date.innerHTML=vewData[i].createdAt;
+					metadata.appendChild(date);
+					
+					var text = document.createElement("div");
+					text.className="text";
+					text.innerHTML=vewData[i].text;
+					content.appendChild(text);
+					
+					var actions = document.createElement("div");
+					actions.className="actions";
+					content.appendChild(actions);
+					
+			
+				} 		
+			}
+		
+		});
+	}
+	
+	
+    $('#commentpost-btn').click(function () {
+		if(window.localStorage['token'] ==null || window.localStorage['article_id'] ==''){
+			dialogBox("请输入用户名密码");
+		}
+		
+        var boo = $('.ui.form').form('validate form');
+        if (boo) {
+			
+            console.log('校验成功');
+			
+            postData();
+        } else {
+            console.log('校验失败');
+        }
+    });
+
+
+
+
+
+    function postData() {
+		var parentCommentId= $("[name='parentComment.id']").val();
+		var nickname= $("[name='nickname']").val();
+		var email= $("[name='email']").val();
+		var content= $("[name='content']").val();
+		var articleId= window.localStorage['article_id'];
+		// console.log("",this.$cookie.get('token'))
+		$.ajax({
+		
+			
+			type: "POST", //请求方式
+			url: " https://blog-server-api.amarea.cn/post/newComment", //请求地址
+			// private Long id; // 文章id
+			//     private String author; // 作者
+			//     private String title; // 标题
+			//     private String content; // 文章内容
+			
+			data: JSON.stringify({
+				// "parentCommentId" : parentCommentId,
+				"token" : window.localStorage['token'],
+				"text" : content,
+				"pid" : articleId,
+				"agent": navigator.userAgent
+			}),
+			//可要可不要
+			contentType: "application/json",
+			dataType: "JSON",
+			success: function(res) {
+				
+				    // $(window).scrollTo($('#goto'),0);
+				    
+					clearContent();
+					init();
+		
+				
+				console.log("res:", res)
+			},
+			error: function(res) {
+				console.log("res:", res)
+			}
+		});
+    }
+
+    function clearContent() {
+        $("[name='nickname']").val('');
+        $("[name='email']").val('');
+        $("[name='content']").val('');
+        $("[name='parentComment.id']").val(0);
+        $("[name='content']").attr("placeholder", "请输入评论信息...");
+    }
+
+    function reply(obj) {
+        var commentId = $(obj)[0].attributes.commentid.value;
+		console.log($(obj)[0].attributes.commentid.value)
+        var commentNickname = $(obj)[0].attributes.commentnickname.value;
+        $("#textareaContent").attr("placeholder", "@"+commentNickname).focus();
+        $("[name='parentComment.id']").val(commentId);
+        window.scrollTo($('#comment-form'),500);
+    }
+	
+	
+	
+	
+	
+	function dialogBox(message, yesCallback, noCallback) {
+		if (message) {
+			$('.dialog-message').html(`<div class="form-box">
+				<input id="account" type="text"placeholder="账号"/> 	
+				<input id="password" type="password" placeholder="密码" style="margin-top: 5px;"/>
+				<p><button id="loginbtn" onclick="submit2()" style="margin-top: 5px;">登录</button></p>
+	
+			</div>`);
+		}
+		// 显示遮罩和对话框
+		$('.wrap-dialog').removeClass("hide");
+		// 确定按钮
+		$('#confirm').click(function() {
+			$('.wrap-dialog').addClass("hide");
+			yesCallback();
+		});
+		// 取消按钮
+		$('#cancel').click(function() {
+			$('.wrap-dialog').addClass("hide");
+			document.getElementById("submit").checked=false;
+			// noCallback();
+		});
+	}
+	
+	
+	function submit2(){
+		var username=$("#account").val();
+		var password=$("#password").val(); 
+		if(username == null || username == "" || password == null || password == ""){
+			showMessage("账号或密码不能为空，请重新输入！",0)
+		}else{
+			$.ajax({
+				
+				headers:{'Content-Type':"application/x-www-form-urlencoded"},
+				type: "POST",//请求方式
+				url: " https://blog-server-api.amarea.cn/user/login",//请求地址
+			
+				data: {
+						username:username,
+						password:password,
+					
+					},
+
+				success: function(res) {
+					// 拿到token
+					window.localStorage["token"] = res.data.token;
+					
+					// if(res["status"]=="200"){
+					// 	showMessage("登录成功！",1);
+					// 	if(!window.localStorage){
+					// 	    alert("浏览器不支持localstorage");
+					// 	}else{
+					// 	    var storage=window.localStorage;
+					// 	    //第一种设置方式：
+					// 	    storage["access_token"]="Bearer "+res["access_token"];	// token用来校验是否登录
+					// 	    storage["refresh_token"]="Bearer "+res["refresh_token"];	//refreshtoken用来请求后端刷新token
+					// 	    storage["username"]=username;	//refreshtoken用来请求后端刷新token
+					// 	}
+					// 	window.location.href = "publicIndex.html";
+					// }else{
+					// 	showMessage("用户名或密码错误，请重新登录！",0)		
+					// }
+					
+					console.log("res:",res)
+				},error: function(res){
+					// showMessage("用户名或密码错误，请重新登录！",0)	
+					console.log("res:",res)
+				} 
+			});
+		}
+	}
+</script>
+</body>
+</html>

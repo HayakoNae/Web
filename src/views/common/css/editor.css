@@ -1,0 +1,89 @@
+.releaseBtn {
+  position: fixed;
+  bottom: 231.5px;
+  right: 399.1px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; 
+
+}
+
+  .releaseIcon {
+    float: left;
+    width: 40px;
+    height: 40px;
+    border-radius: 5%;
+    border: none;
+	background-color: white;
+    padding: 20rpx;
+  }
+  .releaseImg {
+    width: 30px;
+    height: 30px;
+    border: none;
+  }
+  
+  .articleTitle{
+	  text-align: center;
+	  height: 80px;
+	  line-height: 80px;
+  }
+  
+  #articleTitleInput,#articleAbstract{
+	  border: none;
+	  height: 45px;
+	  width: 420px;
+	  font-size: 20px;
+	  padding-left: 90px;
+	  background-color: white;
+	  border-radius:6px;
+  }
+  
+  #commitbtn{
+	  border: none;
+	  height: 45px;
+	  width: 200px;
+	  font-size: 20px;
+	  background-color: papayawhip;
+	  border-radius:6px;
+  }
+  #articleType{
+	border: none;
+	height: 45px;
+	width: 170px;
+	padding-left: 20px;
+	font-size: 20px;
+	background-color: papayawhip;
+	border-radius:6px;  
+  }
+  
+  /* 消息提示框————————————————————————————————————————————> */
+  .showMessage {
+  	padding: 10px 20px;
+  	border-radius: 5px;
+  	position: fixed;
+  	top: -1%;
+  	left: 50%;
+  	color: #ffffff;
+  	z-index: 999;
+  	transform: translate(-50%, 0);
+  }
+  
+  .showMessageSuccess {
+  	/*    background-color: #f0f9eb;
+      border: 1px solid #E1F3D8; */
+  	color: #67c23a;
+  }
+  
+  .showMessageError {
+  	/*    background-color: #fef0f0;
+      border: 1px solid #fde2e2; */
+  	color: #F76C6C;
+  }
+  
+  /* 消息提示框————————————————————————————————————————————> */
+
+  
+  
+  

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-hans">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport"
+			content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>博客系统 | 正文</title>
+
+		<!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css"> -->
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/articleinfo.css">
+	</head>
+	<body onload="init()" style="margin-left: -400px;">
+		<div class="nav">
+			<!--   头部导航 navigator     -->
+			<img src="images/logos/editormd-logo-320x320.png" alt="logo 图">
+			<span class="title">privateblog</span>
+			<!-- 无意义的，为了撑开布局空间 -->
+			<span class="spacer"></span>
+			<!--  <a href="index.html">主页</a>
+    <a href="edit.html">写博客</a> -->
+			<!--  注销：删除用户的登录状态，需要动态操作，暂时不管-->
+			<!--  <a href="login.html">注销</a> -->
+		</div>
+		<div class="container" style="margin-top: 20px;margin-left: 350px; height: 160%;">
+			<!--  内容区-->
+			<div class="container-left">
+				<!--  个人信息-->
+				
+
+			</div>
+			<div class="container-right" style="width: 900px;">
+				<div class="blog-content">
+					<h3 id="title1">
+						<!-- 关于前端三剑客 -->
+					</h3>
+					<div class="date" id="date">
+						<!-- 2022-1-22 -->
+					</div>
+					<!--博客正文-->
+					<!--  <p>
+                HTML是超文本标记语言，是一个网站页面的主要内容和主体框架。主要用来实现静态页面，目前我们看到的文字、图片、动画、声音、表格、超链接等网页元素都是通过HTML实现的。HTML是由各种标签组成的，所学习HTML就是在了解HTML主体框架的结构基础上学习各种标签的使用方法。
+            </p>
+            <p>
+                CSS是层叠样式表，主要用来控制调整网页的样式，它与网页的结构和内容没有关系，仅仅是通过不同语义的标签来调整网页内容的不同表现样式。在网页上实现CSS样式调整一般有两种方式：内嵌式，将CSS代码集中写到HTML文档的头部标签中，并用style标记定义，一般位于head标记中的title标记之后，简而言之就是直接在THML文件中直接添加CSS样式的方式；嵌入式，是将所有的样式放在一个或多个以CSS为拓展名的外部样式表文件中，通过标记将外部样式表文件链接到HTML文件中，简而言之就是HTML文件域CSS文件单独存在，再通过Link的方式将CSS所写的样式添加到HTML中。
+            </p>
+            <p>
+                JavaScript是一种完整的网页脚本语言，有自己独立的语法，可以完成复杂的程序逻辑，而HTML和CSS仅仅是标记语言，不具备编程语言的程序逻辑。JavaScript主要负责网页的各式各样的动态功能，因此可以为用户提供更流畅美观的页面浏览效果，以及添加页面交互行为，给用户更好的视觉和使用体验。JavaScript的工作原理是通过在HTML网页中直接嵌入JS脚本，可以实现相应浏览器时间，读写HTML元素内容，更改HTML元素样式等功能。
+
+            </p>
+			<p>
+                JavaScript是一种完整的网页脚本语言，有自己独立的语法，可以完成复杂的程序逻辑，而HTML和CSS仅仅是标记语言，不具备编程语言的程序逻辑。JavaScript主要负责网页的各式各样的动态功能，因此可以为用户提供更流畅美观的页面浏览效果，以及添加页面交互行为，给用户更好的视觉和使用体验。JavaScript的工作原理是通过在HTML网页中直接嵌入JS脚本，可以实现相应浏览器时间，读写HTML元素内容，更改HTML元素样式等功能。
+
+            </p> -->
+					<div id="content"></div>
+				</div>
+			</div>
+		</div>
+
+
+		<div>
+			<iframe src=" comment.html"
+				style="border: none; height: 700px; width: 440px;margin-left: 1770px;position: fixed; margin-top: -690px;padding-left: 20px;padding-left: 10px;border-radius: 25px;"></iframe>
+		</div>
+
+
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+		<!-- 		<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script> -->
+		<script>
+			// var aa='';
+			//     $(function(){
+			//            $.ajax({
+			//                type:"get",
+			//                url:"html.md",
+			//                dataType:"html",
+			//                success:function(res){
+			//                   show(res)
+			//                }
+			//            })
+
+			//            function show(data) {
+			// 			//`![](http://127.0.0.1:8081/upload/2a597533-cf2e-4d17-9605-3d889e202d20.png)可以没问题### 可以认识你`
+			//                document.getElementById('content').innerHTML = marked.parse(aa);
+			//            }
+			//        })
+
+			function getting(pid) {
+				$.ajax({
+
+
+					type: "GET", //请求方式
+					data: {
+						pid
+					},
+					url: " https://blog-server-api.amarea.cn/post/getPost", //请求地址
+					success: function(data) {
+						console.log("articleinfo", data.data.post.text)
+						var vewData = data;
+						aa = data.data.post.text;
+
+						//`![](http://127.0.0.1:8081/upload/2a597533-cf2e-4d17-9605-3d889e202d20.png)可以没问题### 可以认识你`
+						document.getElementById('content').innerHTML = marked.parse(data.data.post.text);
+						document.getElementById('title1').innerHTML = data.data.post.title;
+
+						// 		
+					}
+
+				});
+			}
+
+			function init() {
+				getting(window.localStorage['article_id']);
+			}
+
+
+			//	———————————————————————————————————————————— Comment ————————————————————————————————————————————————————————————————————>
+
+			//	———————————————————————————————————————————— Comment ————————————————————————————————————————————————————————————————————>
+		</script>
+	</body>
+</html>

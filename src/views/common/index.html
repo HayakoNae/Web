@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-hans">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport"
+			content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>博客系统 | 列表</title>
+		<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.6/dist/vue.min.js"></script>
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/style.css" rel="stylesheet">
+		<link href="css/articles.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css">
+		<link rel="stylesheet" href="css/index.css">
+	</head>
+	<body>
+		<div class="nav">
+			<!--   头部导航 navigator     -->
+			<img src="images/logos/editormd-favicon-48x48.ico" alt="logo 图">
+			<span class="title">privateblog</span>
+			<!-- 无意义的，为了撑开布局空间 -->
+			<span class="spacer"></span>
+			<!-- <a href="index.html">主页</a>
+        <a href="edit.html">写博客</a>
+        <!--  注销：删除用户的登录状态，需要动态操作，暂时不管-->
+			<a href="http://localhost:8001">管理员登录</a>
+		</div>
+		<div class="form1" style="position:fixed;margin-top: 35px;margin-left: 550px;">
+			<ul class="row" style="align-items: center ;text-align: center;">
+				<li class="col-xs-3" style="align-items: center;text-align: center;">
+					<input type="text" class="form-control" placeholder="内容查找..." id="searchContent"
+						style="color: lightgoldenrodyellow;">
+					<span><a href="#" class="btn btn-primary" onclick="getArticleByArgs()">查询</a><span>
+				</li>
+			</ul>
+		</div>
+		<div class="container" style="margin-top: 150px;">
+
+			<div class="container-right" id="content">
+
+
+			</div>
+		</div>
+		<div class="page" style="margin-top: 55px;">
+			<div id="pageInfo" class="pull-left">共 <span id="recoredCount">400</span> 条记录
+				<!-- <div class="pull-right">
+				<nav aria-label="..." class="pull-left">
+					<ul class="pagination">
+						<li><a href="#" aria-label="Previous" onclick="previousPage()"><span
+									aria-hidden="true">«</span></a></li>
+						<li><a id="onepage" href="#" onclick="getArticleByPage(this)">1</a></li>
+						<li><a id="twopage" href="#" onclick="getArticleByPage(this)">2</a></li>
+						<li><a id="threepage" href="#" onclick="getArticleByPage(this)">3</a></li>
+						<li><a id="fourpage" href="#" onclick="getArticleByPage(this)">4</a></li>
+						<li><a id="finepage" href="#" onclick="getArticleByPage(this)">5</a></li>
+						<li><a href="#" aria-label="Next" onclick="nextPage()"><span aria-hidden="true">»</span></a>
+						</li>
+					</ul>
+				</nav>
+				<div class="pull-left p-r-20  p-l-20">
+					<select class="form-control" id="pageSize">
+						<option value="5">5条每页</option>
+						<option value="10">10条每页</option>
+					</select>
+				</div>
+				<div class="pull-left">跳至
+					<input id="toPage" type="text" value="5" class="form-control text-center">
+					页
+				</div>
+			
+			</div> -->
+			</div>
+
+			<script>
+				// var app = new Vue({
+				//         el: '#app',
+				//         data: {
+				//             message: 'Hello Vue!',
+				//         },
+				// 		methods:{
+				// 			go(){
+				// 				alert("nihao")
+				// 				this.$router.replace({
+				// 					name: 'login'
+				// 				})	
+				// 			}
+				// 		}
+				//     });
+
+				var args = '';
+				var pageSize = 5;
+
+				// 每页显示条数，这个变量范围几乎是全局的，避免多次获取导致冗余
+				$("#pageSize").change(function() {
+					pageSize = document.getElementById("pageSize").value;
+					getting(0, pageSize, args); // 默认第一页开始
+				});
+
+				function getting(currentPage, pageSize, args) {
+					$.ajax({
+
+
+						type: "GET", //请求方式
+						data: {
+							currentPage, // 初始数据是从第一页开始的
+							pageSize, // 每页显示条数
+							args,
+						},
+						url: "https://blog-server-api.amarea.cn/post/getHotList", //请求地址
+						success: function(data) {
+							console.log("data:", data.data.posts)
+							document.getElementById("recoredCount").textContent = data.data.posts.length;
+							var vewData = data; 
+							let tdby = document.getElementById("content"); 
+							tdby.innerHTML = ''; 
+							var a = "";
+							for (let i = 0; i < vewData.data.posts
+								.length - 1; i++
+							) { 
+								var a2 = '<div class="blog"><div class="title">' + vewData.data.posts[i]["title"] +
+								
+									'</div><div class="desc" style="text-align: center; overflow:hidden;width:1150px; white-space: nowrap;text-overflow: ellipsis;-o-text-overflow:ellipsis;">摘要：' +
+									vewData.data.posts[i]["text"] +
+									'</div>                <a class="detail" href="javascript:void(0)" id="' + vewData.data.posts[
+										i]
+									["pid"] + '" onclick="toArticleDetail(this)">查看正文 &gt;&gt</a>            </div>';
+								a += a2;
+								tdby.innerHTML = a;
+
+
+
+
+								if (i + 2 == vewData.length) {
+
+									var recoredCount = document.getElementById("recoredCount");
+									recoredCount.textContent = 2;
+
+									console.log('vewData[i]["total"]', vewData[i + 1]["total"]["value"])
+									var pageCount = document.getElementById("pageCount");
+									pageCount.textContent = parseInt(parseInt(vewData[i + 1]["total"]["value"]) /
+										pageSize) + 1
+								}
+							}
+						}
+
+					});
+				}
+
+				getting(0, 5, args)
+
+				// 页数按扭值增加
+				function nextPage() {
+					var pageCount = document.getElementById("pageCount");
+					var finepage = document.getElementById("finepage");
+					console.log("finepage:pageCount——————>", finepage.textContent + ":" + parseInt(pageCount.textContent));
+					if (parseInt(finepage.textContent) < parseInt(pageCount.textContent)) {
+						var onepage = document.getElementById("onepage");
+						onepage.textContent = (Number(onepage.textContent) + 5); // Number：将获取的字符串转成number类型，不然会变成拼接的情况
+
+						var twopage = document.getElementById("twopage");
+						twopage.textContent = (Number(twopage.textContent) + 5);
+
+						var threepage = document.getElementById("threepage");
+						threepage.textContent = (Number(threepage.textContent) + 5);
+
+						var fourpage = document.getElementById("fourpage");
+						fourpage.textContent = (Number(fourpage.textContent) + 5);
+
+						finepage.textContent = (Number(finepage.textContent) + 5);
+					}
+				}
+
+				//页数按钮值减小
+				function previousPage() {
+					var onepage = document.getElementById("onepage");
+					if (onepage.textContent > 1) {
+						onepage.innerText = (Number(onepage.textContent) - 5);
+
+						var twopage = document.getElementById("twopage");
+						twopage.innerText = (Number(twopage.textContent) - 5);
+
+						var threepage = document.getElementById("threepage");
+						threepage.innerText = (Number(threepage.textContent) - 5);
+
+						var fourpage = document.getElementById("fourpage");
+						fourpage.innerText = (Number(fourpage.textContent) - 5);
+
+						var finepage = document.getElementById("finepage");
+						finepage.innerText = (Number(finepage.textContent) - 5);
+					}
+				}
+
+				// 根据页数查询
+				function getArticleByPage(page) {
+					console.log($(page).text())
+					var currentPageIndex = document.getElementById("currentPageIndex"); // 当前页
+					var pageCount = document.getElementById("pageCount"); // 总页数
+					if (($(page).text()) <= parseInt(pageCount.textContent)) { // 选择的页数要小于总页数
+						currentPageIndex.innerText = ($(page).text()); //改变当前页
+						// 页数按钮触发按页查询
+						// window.location.replace(" articles.html");
+						getting(($(page).text()), pageSize, args);
+					}
+				}
+
+				$("#toPage").change(function() {
+					toPage = document.getElementById("toPage").value; // 想要跳至的页数
+					pageCount = document.getElementById("pageCount"); // 总页数
+					if (toPage <= parseInt(pageCount.textContent)) { // 跳至的页数要小于总页数
+						console.log("toPage:", parseInt((toPage - 1)))
+						getting(parseInt((toPage)), pageSize, args);
+					}
+				});
+
+				// 记录搜索内容
+				$("#searchContent").change(function() {
+					args = document.getElementById("searchContent").value; // 想要跳至的页数
+				});
+
+
+				function getArticleByArgs() {
+					getting(0, pageSize, args);
+				}
+
+
+				// 跳至详情页面并将文章id放置会话中
+				function toArticleDetail(event) {
+					console.log("this.value", event.id);
+					// document.getElementById("searchContent").value = ''; // 想要跳至的页数
+					window.localStorage["article_id"] = event.id;
+					window.location.href = " articleinfo.html";
+				}
+
+
+
+				// 服务器安装完jdk/mysql(还没导入数据)/rabbitmq(本地可以访,但是还没配置好客户端)/还差es
+			</script>
+	</body>
+</html>

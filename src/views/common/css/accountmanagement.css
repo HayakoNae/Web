@@ -1,0 +1,78 @@
+/* 消息提示框————————————————————————————————————————————> */
+.showMessage {
+	padding: 10px 20px;
+	border-radius: 5px;
+	position: fixed;
+	top: 2%;
+	left: 50%;
+	color: #ffffff;
+	z-index: 999;
+	transform: translate(-50%, 0);
+}
+
+.showMessageSuccess {
+	/*    background-color: #f0f9eb;
+    border: 1px solid #E1F3D8; */
+	color: #67c23a;
+}
+
+.showMessageError {
+	/*    background-color: #fef0f0;
+    border: 1px solid #fde2e2; */
+	color: #F76C6C;
+}
+
+/* 消息提示框————————————————————————————————————————————> */
+
+
+/* 动态弹出编辑框————————————————————————————————————————————> */
+.black_overlay {
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	z-index: 1001;
+	-moz-opacity: 0.8;
+	opacity: .80;
+	filter: alpha(opacity=80);
+}
+
+.white_content {
+	display: none;
+	position: absolute;
+	top: 10%;
+	left: 10%;
+	width: 80%;
+	height: 80%;
+	border: 16px solid lightblue;
+	background-color: white;
+	z-index: 1002;
+	overflow: auto;
+}
+
+.white_content_small {
+	display: none;
+	position: absolute;
+	top: 20%;
+	left: 30%;
+	width: 40%;
+	height: 50%;
+	border: 16px solid lightblue;
+	background-color: white;
+	z-index: 1002;
+	overflow: auto;
+}
+
+/* 动态弹出编辑框————————————————————————————————————————————> */
+
+        #popUpBox{
+            display: block;        //一开始应该是隐藏状态，所以是none
+            width: 1080px;    //弹出框的宽
+            height: 630px;    //弹出框的高
+            background-color: yellow;
+            margin:0 auto;    //弹出框页面居中
+        }
+
