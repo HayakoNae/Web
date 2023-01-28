@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>login</title>
-	<link rel="stylesheet" type="text/css" href="../Json/css/style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>blogsystem</title>
+  <% if (process.env.NODE_ENV === 'production') { %>
+  <!-- 生产环境 -->
+  <script>document.write('<script src="./config/index.js?t=' + new Date().getTime() + '"><\/script>');</script>
+  <% }else { %>
+  <!-- 开发环境 -->
+  <link rel="shortcut icon" type="image/x-icon" href="./static/img/editormd-favicon-64x64.ico">
+  <script src="./static/config/index.js"></script>
+  <script src="./static/plugins/mock-1.0.0-beta3/mock-min.js"></script>
+  <script src="./static/plugins/echarts-3.8.5/echarts.common.min.js"></script>
+  <script src="./static/plugins/ueditor-1.4.3.3/ueditor.config.js"></script>
+  <script src="./static/plugins/ueditor-1.4.3.3/ueditor.all.min.js"></script>
+  <script src="./static/plugins/ueditor-1.4.3.3/lang/zh-cn/zh-cn.js"></script>
+  <% } %>
 </head>
 <body>
-	<div class="control">
-		<div class="item">
-      <div class="active"><h1>上传了项目后才发现VUE项目github无法预览，没有条件搭建服务器上传网页，出此下策。</h1></div>
-      <div><a href = "https://github.com/HayakoNae/webWork">作业源码与报告链接：https://github.com/HayakoNae/webWork</a></div>
-		</div>
-	</div>
-
+<div id="app"></div>
 </body>
 </html>
